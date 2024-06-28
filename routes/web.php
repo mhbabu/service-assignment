@@ -19,3 +19,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/availability/override', [AvailabilityController::class, 'setOverrideAvailability']);
     Route::get('/availability/{profile}/buyer', [AvailabilityController::class, 'getAvailabilityForBuyer']);
 });
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
