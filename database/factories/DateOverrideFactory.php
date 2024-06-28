@@ -21,7 +21,7 @@ class DateOverrideFactory extends Factory
         $endTime1   = $this->faker->time($format = 'H:i:s', $max = '12:00:00');
         
         $startTime2 = $this->faker->optional()->time($format = 'H:i:s', $min = '13:00:00');
-        $endTime2 = $this->faker->optional()->time($format = 'H:i:s', $min = '13:00:00', $max = '17:00:00');
+        $endTime2   = $this->faker->optional()->time($format = 'H:i:s', $min = '13:00:00', $max = '17:00:00');
 
         // Ensure valid time intervals
         if (strtotime($startTime1) > strtotime($endTime1)) {
