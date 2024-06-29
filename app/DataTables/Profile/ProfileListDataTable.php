@@ -1,12 +1,12 @@
 <?php
 
-namespace App\DataTables\Category;
+namespace App\DataTables\Profile;
 
-use App\Models\Category;
+use App\Models\Profile;
 use Yajra\DataTables\Services\DataTable;
 use Illuminate\Http\JsonResponse;
 
-class CategoryListDataTable extends DataTable
+class ProfileListDataTable extends DataTable
 {
     /**
      * Display ajax response.
@@ -18,30 +18,38 @@ class CategoryListDataTable extends DataTable
     {
         return datatables()
             ->eloquent($this->query())
-            ->editColumn('name', function($data){
-                return ucfirst($data->name) ?? '-';
-            })
             ->editColumn('status', function ($data) {
-                return $data->status === 1 ? "<label class='badge bg-success'> Active </label>" : "<label class='badge bg-danger'> Inactive </label>";
+                if ($data->status === 1) return "<label class='badge bg-success'> Active </label>";
+                else if ($data->status === 2) return "<label class='badge bg-warning'> Pending</label>";
+                return "<label class='badge bg-danger'> Rejected/Banned </label>";
+            })
+            ->editColumn('category_name', function($data){
+                return ucfirst($data->category_name) ?? '-';
             })
             ->addColumn('action', function ($data) {
-                if(auth()->user()->is_admin){
+                if (auth()->user()->is_admin) {
                     $actionBtn = '<a href="' . route('categories.edit', $data->id) . '" class="btn btn-xs btn-primary btn-sm" title="Edit"> <i class="fa fa-edit"></i> Edit</a> ';
                     $actionBtn .= '<a href="' . route('categories.delete', $data->id) . '" class="btn btn-xs btn-danger btn-sm" title="Delete" onclick="return confirm(\'Are you sure you want to delete this item?\')"> <i class="fa fa-trash"></i> Delete</a>';
-    
+
                     return $actionBtn;
                 }
-                
-               return '-';
 
+                return '-';
             })
             ->rawColumns(['action', 'status'])
             ->make(true);
     }
 
-    public function getCategoryList()
+    public function getProfileList()
     {
-        return Category::latest();
+        $query =  Profile::leftJoin('users', 'users.id', '=', 'profiles.user_id')
+            ->leftJoin('categories', 'categories.id', '=', 'profiles.category_id');
+        if(!auth()->user()->is_admin)
+            $query->where('profiles.user_id', auth()->id());
+        
+        return $query->select(['profiles.*', 'users.name as user_name', 'categories.name as category_name'])
+        ->orderBy('profiles.id', 'desc');    
+            
     }
 
     /**s
@@ -51,7 +59,7 @@ class CategoryListDataTable extends DataTable
      */
     public function query()
     {
-        return $this->applyScopes($this->getCategoryList());
+        return $this->applyScopes($this->getProfileList());
     }
 
     /**
@@ -80,11 +88,11 @@ class CategoryListDataTable extends DataTable
                 'language' => [
                     'lengthMenu' => '<span class="length-menu-text">Show</span> _MENU_ <span class="length-menu-text">entries</span>',
                     'paginate' => [
-                    'first'    => '&laquo;',
-                    'previous' => '&lsaquo;',
-                    'next'     => '&rsaquo;',
-                    'last'     => '&raquo;',
-                ],
+                        'first'    => '&laquo;',
+                        'previous' => '&lsaquo;',
+                        'next'     => '&rsaquo;',
+                        'last'     => '&raquo;',
+                    ],
                 ]
             ]);
     }
@@ -97,9 +105,10 @@ class CategoryListDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'name'             => ['data' => 'name', 'name' => 'name', 'orderable' => true, 'searchable' => true],
-            'status'           => ['data' => 'status', 'name' => 'status', 'orderable' => true, 'searchable' => false],
-            'action'           => ['searchable' => false, 'orderable' => false]
+            'user_name'     => ['data' => 'user_name', 'name' => 'users.name', 'orderable' => true, 'searchable' => true],
+            'category_name' => ['data' => 'category_name', 'name' => 'categories.name', 'orderable' => true, 'searchable' => false],
+            'status'        => ['data' => 'status', 'name' => 'profiles.status', 'orderable' => true, 'searchable' => false],
+            'action'        => ['searchable' => false, 'orderable' => false]
         ];
     }
     /**
@@ -109,6 +118,6 @@ class CategoryListDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Category_List_' . date('Y_m_d_H_i_s') . '.json';
+        return 'Profile_List' . date('Y_m_d_H_i_s') . '.json';
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ServiceProfileController;
 use App\Http\Controllers\AvailabilityController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -14,9 +15,10 @@ Auth::routes();
 // Route::resource('categories', CategoryController::class);
 Route::resource('profiles', ProfileController::class);
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('categories/delete/{category}', [CategoryController::class, 'delete'])->name('categories.delete');
     Route::resource('categories', CategoryController::class)->except(['destroy']);
+    Route::resource('service-profiles', ServiceProfileController::class)->except(['destroy']); // various service profiles
     
     Route::post('/availability/weekly', [AvailabilityController::class, 'setWeeklyAvailability']);
     Route::post('/availability/override', [AvailabilityController::class, 'setOverrideAvailability']);

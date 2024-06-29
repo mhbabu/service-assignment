@@ -3,32 +3,48 @@
 namespace App\Http\Controllers\Admin;
 
 use App\DataTables\Category\CategoryListDataTable;
+use App\DataTables\Profile\ProfileListDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\Profile;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
-class CategoryController extends Controller
+class ServiceProfileController extends Controller
 {
-    public function index(CategoryListDataTable $categoryListDataTable)
+    public function index(ProfileListDataTable $profileListDataTable)
     {
-        return $categoryListDataTable->render('admin.category.index');
+        return $profileListDataTable->render('admin.service-profile.index');
     }
 
     public function create()
     {
-        return view("pages.setting.leave-type.create");
+        $data['categories'] = Category::where('status', 1)->pluck('name', 'id')->map(function ($name) {
+            return ucfirst($name);
+        });
+        return view("admin.service-profile.create", $data);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name'   => 'required|unique:categories,name|max:191',
+            'category_id' => [ 'required', Rule::unique('profiles')->where(function ($query) {
+                return $query->where('user_id', auth()->id());
+            }),
+        ],
             'status' => 'required'
+        ],[],[
+            'category_id' => 'category profile'
         ]);
 
-        Category::create($request->all());
-        Toastr::success('Category created successfully.');
-        return redirect()->route('leave-type-settings.index');
+        Profile::create([
+            'category_id' => $request->input('category_id'),
+            'status'      => $request->input('status'),
+            'user_id'     => auth()->id()
+        ]);
+        Toastr::success('Profile created successfully.');
+        return redirect()->route('service-profiles.index');
     }
 
     public function edit(LeaveType $leave_type_setting)
