@@ -28,8 +28,8 @@ class ProfileListDataTable extends DataTable
             })
             ->addColumn('action', function ($data) {
                 if (auth()->user()->is_admin) {
-                    $actionBtn = '<a href="' . route('categories.edit', $data->id) . '" class="btn btn-xs btn-primary btn-sm" title="Edit"> <i class="fa fa-edit"></i> Edit</a> ';
-                    $actionBtn .= '<a href="' . route('categories.delete', $data->id) . '" class="btn btn-xs btn-danger btn-sm" title="Delete" onclick="return confirm(\'Are you sure you want to delete this item?\')"> <i class="fa fa-trash"></i> Delete</a>';
+                    $actionBtn = '<a href="' . route('service-profiles.edit', $data->id) . '" class="btn btn-xs btn-primary btn-sm" title="Edit"> <i class="fa fa-edit"></i> Edit</a> ';
+                    $actionBtn .= '<a href="' . route('service-profiles.delete', $data->id) . '" class="btn btn-xs btn-danger btn-sm" title="Delete" onclick="return confirm(\'Are you sure you want to delete this item?\')"> <i class="fa fa-trash"></i> Delete</a>';
 
                     return $actionBtn;
                 }
@@ -44,6 +44,7 @@ class ProfileListDataTable extends DataTable
     {
         $query =  Profile::leftJoin('users', 'users.id', '=', 'profiles.user_id')
             ->leftJoin('categories', 'categories.id', '=', 'profiles.category_id');
+            
         if(!auth()->user()->is_admin)
             $query->where('profiles.user_id', auth()->id());
         

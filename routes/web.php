@@ -18,6 +18,8 @@ Route::resource('profiles', ProfileController::class);
 Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('categories/delete/{category}', [CategoryController::class, 'delete'])->name('categories.delete');
     Route::resource('categories', CategoryController::class)->except(['destroy']);
+
+    Route::get('service/profiles/{service_profile}/delete', [ServiceProfileController::class, 'delete'])->name('service-profiles.delete');
     Route::resource('service-profiles', ServiceProfileController::class)->except(['destroy']); // various service profiles
     
     Route::post('/availability/weekly', [AvailabilityController::class, 'setWeeklyAvailability']);
