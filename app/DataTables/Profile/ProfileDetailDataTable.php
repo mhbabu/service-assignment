@@ -3,6 +3,7 @@
 namespace App\DataTables\Profile;
 
 use App\Models\WeeklyAvailability;
+use Carbon\Carbon;
 use Yajra\DataTables\Services\DataTable;
 use Illuminate\Http\JsonResponse;
 
@@ -18,6 +19,12 @@ class ProfileDetailDataTable extends DataTable
     {
         return datatables()
             ->eloquent($this->query())
+            ->editColumn('start_time', function($data){
+               return $data->start_time ? date('h:i A', strtotime($data->start_time)) : '-';
+            })
+            ->editColumn('end_time', function($data){
+                return $data->end_time ? date('h:i A', strtotime($data->end_time)) : '-';
+             })
             ->editColumn('status', function ($data) {
                 if ($data->status === 1) return "<label class='badge bg-success'> Active </label>";
                 else if ($data->status === 2) return "<label class='badge bg-warning'> Pending</label>";

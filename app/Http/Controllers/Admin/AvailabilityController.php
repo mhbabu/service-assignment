@@ -41,9 +41,6 @@ class AvailabilityController extends Controller
             $startTime = Carbon::createFromFormat('H:i', $data['start_time'][$index])->format('H:i:s');
             $endTime   = Carbon::createFromFormat('H:i', $data['end_time'][$index])->format('H:i:s');
 
-            info($startTime);
-            info($endTime);
-
             WeeklyAvailability::updateOrCreate(
                 [
                     'profile_id' => $data['profile_id'],
@@ -56,8 +53,7 @@ class AvailabilityController extends Controller
             );
         }
 
-
         Toastr::success('Seller weekly availability created successfully.');
-        return back();
+        return redirect()->route('service-profiles.show', $data['profile_id']);
     }
 }
