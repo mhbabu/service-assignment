@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('profile_id')->constrained()->onDelete('cascade');
             $table->date('date');
-            $table->time('start_time')->nullable();
-            $table->time('end_time')->nullable();
             $table->boolean('is_available')->default(0);
             $table->timestamps();
         });

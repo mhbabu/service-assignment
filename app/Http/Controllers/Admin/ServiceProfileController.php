@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\DataTables\Profile\ProfileDetailDataTable;
+use App\DataTables\Profile\ProfileAvailabilityDataTable;
 use App\DataTables\Profile\ProfileListDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
@@ -85,10 +85,10 @@ class ServiceProfileController extends Controller
         return redirect()->route('service-profiles.index');
     }
 
-    public function show(ProfileDetailDataTable $profileDetailDataTable, Profile $service_profile){
+    public function show(ProfileAvailabilityDataTable $profileAvailabilityDataTable, Profile $service_profile){
         $data['profile']      = $service_profile;
         $params['profile_id'] = $service_profile->id;
-        return $profileDetailDataTable->with($params)->render('admin.service-profile.detail', $data);
+        return $profileAvailabilityDataTable->with($params)->render('admin.service-profile.detail', $data);
     }
 
     public function delete(Profile $service_profile)

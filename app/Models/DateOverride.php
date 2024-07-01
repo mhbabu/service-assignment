@@ -12,8 +12,6 @@ class DateOverride extends Model
     protected $fillable = [
         'profile_id',
         'date',
-        'start_time',
-        'end_time',
         'is_available'
     ];
 

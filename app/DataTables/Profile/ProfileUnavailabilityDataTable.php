@@ -2,11 +2,12 @@
 
 namespace App\DataTables\Profile;
 
-use App\Models\WeeklyAvailability;
+use App\Models\DateOverride;
+use Carbon\Carbon;
 use Yajra\DataTables\Services\DataTable;
 use Illuminate\Http\JsonResponse;
 
-class ProfileDetailDataTable extends DataTable
+class ProfileUnavailabilityDataTable extends DataTable
 {
     /**
      * Display ajax response.
@@ -18,27 +19,15 @@ class ProfileDetailDataTable extends DataTable
     {
         return datatables()
             ->eloquent($this->query())
-            ->editColumn('start_time', function($data){
-               return $data->start_time ? date('h:i A', strtotime($data->start_time)) : '-';
+            ->addColumn('day_of_week', function($data){
+                return $data->date ? Carbon::parse($data->date)->format('l') : '-';
             })
-            ->editColumn('end_time', function($data){
-                return $data->end_time ? date('h:i A', strtotime($data->end_time)) : '-';
-             })
-            ->editColumn('status', function ($data) {
-                if ($data->status === 1) return "<label class='badge bg-success'> Active </label>";
-                else if ($data->status === 2) return "<label class='badge bg-warning'> Pending</label>";
-                return "<label class='badge bg-danger'> Rejected/Banned </label>";
-            })
-            ->editColumn('category_name', function($data){
-                return ucfirst($data->category_name) ?? '-';
-            })
-            ->rawColumns(['status'])
             ->make(true);
     }
 
-    public function weeklyAvailabilityList()
+    public function weeklyUnavailabilityList()
     {
-        return WeeklyAvailability::where('profile_id', $this->profile_id)->latest();  
+        return DateOverride::where('profile_id', $this->profile_id)->latest();  
             
     }
 
@@ -49,7 +38,7 @@ class ProfileDetailDataTable extends DataTable
      */
     public function query()
     {
-        return $this->applyScopes($this->weeklyAvailabilityList());
+        return $this->applyScopes($this->weeklyUnavailabilityList());
     }
 
     /**
@@ -95,9 +84,8 @@ class ProfileDetailDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'day_of_week'   => ['data' => 'day_of_week', 'name' => 'day_of_week', 'orderable' => true, 'searchable' => true],
-            'start_time'    => ['data' => 'start_time', 'name' => 'start_time', 'orderable' => true, 'searchable' => true],
-            'end_time'        => ['end_time' => 'status', 'name' => 'end_time', 'orderable' => true, 'searchable' => true]
+            'date'           => ['data' => 'date', 'name' => 'date', 'orderable' => true, 'searchable' => true],
+            'day_of_week'    => ['data' => 'day_of_week', 'day_of_week' => 'date', 'orderable' => true, 'searchable' => false],
         ];
     }
     /**
@@ -107,6 +95,6 @@ class ProfileDetailDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Weekly_Availability_List' . date('Y_m_d_H_i_s') . '.json';
+        return 'Weekly_Unavailability_List' . date('Y_m_d_H_i_s') . '.json';
     }
 }
