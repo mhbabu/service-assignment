@@ -3,7 +3,6 @@
 namespace App\DataTables\Profile;
 
 use App\Models\WeeklyAvailability;
-use Carbon\Carbon;
 use Yajra\DataTables\Services\DataTable;
 use Illuminate\Http\JsonResponse;
 
