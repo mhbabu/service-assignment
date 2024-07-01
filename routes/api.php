@@ -16,3 +16,4 @@ Route::prefix('auth-user')->middleware('auth:sanctum')->group( function () {
     Route::post('set-override-availabilities', [EndPoinController::class, 'setOverrideAvailability']);
 });
 
+Route::get('seller-availabilities/{userId}', [EndPoinController::class, 'getAvailability']);
