@@ -13,5 +13,6 @@ Route::prefix('user')->group(function () {
 
 Route::prefix('auth-user')->middleware('auth:sanctum')->group( function () {
     Route::post('set-weekly-availabilities', [EndPoinController::class, 'setWeeklyAvailability']);
+    Route::post('set-override-availabilities', [EndPoinController::class, 'setOverrideAvailability']);
 });
 
