@@ -4,7 +4,6 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ServiceProfileController;
 use App\Http\Controllers\Admin\AvailabilityController;
 use App\Http\Controllers\Admin\OverrideAvailabilityController;
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 
