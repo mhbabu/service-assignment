@@ -4,7 +4,6 @@
 @section('content')
     <div class="container mt-5">
         {!! html()->form('POST', route('availabilites.store'))->class('form-horizontal')->open() !!}
-        {!! html()->hidden('timezone')->id('timezone') !!}
         <fieldset class="border p-4">
             <legend class="w-auto">Set Seller Weekly Availabilites</legend>
 
@@ -33,26 +32,23 @@
                             ])->class('form-control day-of-week')->placeholder('Select Day') !!}
                     </td>
                     <td>
-                        {!! html()->time('start_time')->class('form-control timepicker') !!}
+                        {!! html()->time('start_time[]')->class('form-control timepicker') !!}
                     </td>
                     <td>
-                        {!! html()->time('end_time')->class('form-control timepicker') !!}
+                        {!! html()->time('end_time[]')->class('form-control timepicker') !!}
                     </td>
                     <td>
                         <label class="btn btn-primary btn-sm add-more"><i class="bi bi-plus-circle"></i></label>
                     </td>
                 </tr>
             </table>
-            <button class="float-right btn btn-primary">Save</button>
+            <button class="float-end btn btn-primary">Save</button>
         </fieldset>
         {!! html()->form()->close() !!}
     </div>
 @endsection
 
 @section('footer-script')
-   
-    <script src="{{ asset('assets/js/moment.min.js') }}"></script>
-    <script src="{{ asset('assets/js/moment-timezone-with-data.min.js') }}"></script>
     <script>
         /********************************
         ADD MORE WEEKLY AVAILABILITIES
@@ -96,14 +92,6 @@
                 alert('Please select uniq day')
                 $(this).val('');
             }
-        });
-
-        /*******************************************
-        DYNAMICALLY TIME ZONE SCRIPTING START HERE
-        ********************************************/
-        $(document).ready(function() {
-            const timezone = moment.tz.guess();
-            $('#timezone').val(timezone);
         });
     </script>
 @endsection
