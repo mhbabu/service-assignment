@@ -17,9 +17,7 @@ return new class extends Migration
             $table->date('date');
             $table->time('start_time')->nullable();
             $table->time('end_time')->nullable();
-            $table->boolean('is_available');
-            $table->time('start_time_2')->nullable();
-            $table->time('end_time_2')->nullable();
+            $table->boolean('is_available')->default(0);
             $table->timestamps();
         });
     }

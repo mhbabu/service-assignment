@@ -14,9 +14,7 @@ class DateOverride extends Model
         'date',
         'start_time',
         'end_time',
-        'is_available',
-        'start_time_2',
-        'end_time_2',
+        'is_available'
     ];
 
     public function profile()
