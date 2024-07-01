@@ -13,8 +13,8 @@ Route::get('/', function(){
 });
 
 Auth::routes();
-// Route::resource('categories', CategoryController::class);
-Route::resource('profiles', ProfileController::class);
+// // Route::resource('categories', CategoryController::class);
+// Route::resource('profiles', ProfileController::class);
 
 Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('categories/delete/{category}', [CategoryController::class, 'delete'])->name('categories.delete');
@@ -26,7 +26,7 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     Route::get('availabilites/{availability}/delete', [AvailabilityController::class, 'delete'])->name('availabilites.delete');
     Route::resource('availabilites', AvailabilityController::class)->except(['destroy']); 
 
-    Route::get('override-availabilites/{override_availabilite}/delete', [OverrideAvailabilityController::class, 'delete'])->name('availabilites.delete');
+    Route::get('override-availabilites/{availability}/delete', [OverrideAvailabilityController::class, 'delete'])->name('availabilites.delete');
     Route::resource('override-availabilites', OverrideAvailabilityController::class)->except(['destroy']);
     
     // Route::post('/availability/weekly', [AvailabilityController::class, 'setWeeklyAvailability']);
@@ -34,3 +34,4 @@ Route::middleware('auth')->prefix('admin')->group(function () {
     // Route::get('/availability/{profile}/buyer', [AvailabilityController::class, 'getAvailabilityForBuyer']);
 });
 
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

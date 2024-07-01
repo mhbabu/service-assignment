@@ -27,7 +27,7 @@ class ProfileUnavailabilityDataTable extends DataTable
 
     public function weeklyUnavailabilityList()
     {
-        return DateOverride::where('profile_id', $this->profile_id)->latest();  
+        return DateOverride::where('profile_id', $this->profile_id)->oldest('date');  
             
     }
 
