@@ -9,8 +9,9 @@ class AvailabilityController extends Controller
 {
     public function setWeeklyAvailability(Request $request)
     {
+        dd($request->all());
         $request->validate([
-            'profile_id' => 'required|exists:profiles,id',
+            'profile_id'     => 'required|exists:profiles,id',
             'availabilities' => 'required|array',
             'availabilities.*.day_of_week' => 'required|in:Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday',
             'availabilities.*.start_time' => 'required|date_format:H:i',

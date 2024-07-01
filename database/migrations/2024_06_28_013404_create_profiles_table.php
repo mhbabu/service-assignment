@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('profiles', function (Blueprint $table) {
             $table->id();
+            $table->string('title')->nullable();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->string('timezone')->default('UTC');
             $table->tinyInteger('status')->default(1)->comment('0 = Pending, 1 = Active, 2 = Banned/Deactive');
             $table->timestamps();
         });

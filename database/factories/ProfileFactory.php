@@ -15,6 +15,7 @@ class ProfileFactory extends Factory
     public function definition()
     {
         return [
+            'title'       => $this->faker->jobTitle,
             'user_id'     => \App\Models\User::factory(),
             'category_id' => \App\Models\Category::factory()
         ];

@@ -27,14 +27,13 @@ class ProfileListDataTable extends DataTable
                 return ucfirst($data->category_name) ?? '-';
             })
             ->addColumn('action', function ($data) {
-                if (auth()->user()->is_admin) {
-                    $actionBtn = '<a href="' . route('service-profiles.edit', $data->id) . '" class="btn btn-xs btn-primary btn-sm" title="Edit"> <i class="fa fa-edit"></i> Edit</a> ';
-                    $actionBtn .= '<a href="' . route('service-profiles.delete', $data->id) . '" class="btn btn-xs btn-danger btn-sm" title="Delete" onclick="return confirm(\'Are you sure you want to delete this item?\')"> <i class="fa fa-trash"></i> Delete</a>';
+                $actionBtn = '';
+                $actionBtn = '<a href="' . route('service-profiles.show', $data->id) . '" class="btn btn-xs btn-info btn-sm" title="Details"> <i class="bi bi-list"></i> Details</a> ';
+                $actionBtn .= '<a href="' . route('service-profiles.edit', $data->id) . '" class="btn btn-xs btn-primary btn-sm" title="Edit"> <i class="bi bi-pencil"></i> Edit</a> ';
+                $actionBtn .= '<a href="' . route('service-profiles.delete', $data->id) . '" class="btn btn-xs btn-danger btn-sm" title="Delete" onclick="return confirm(\'Are you sure you want to delete this item?\')"> <i class="bi bi-trash"></i> Delete</a>';
 
-                    return $actionBtn;
-                }
-
-                return '-';
+                return $actionBtn;
+               
             })
             ->rawColumns(['action', 'status'])
             ->make(true);
@@ -107,6 +106,7 @@ class ProfileListDataTable extends DataTable
     {
         return [
             'user_name'     => ['data' => 'user_name', 'name' => 'users.name', 'orderable' => true, 'searchable' => true],
+            'tile'          => ['data' => 'title', 'name' => 'profiles.title', 'orderable' => true, 'searchable' => true, 'title' => 'Profile Title'],
             'category_name' => ['data' => 'category_name', 'name' => 'categories.name', 'orderable' => true, 'searchable' => false],
             'status'        => ['data' => 'status', 'name' => 'profiles.status', 'orderable' => true, 'searchable' => false],
             'action'        => ['searchable' => false, 'orderable' => false]

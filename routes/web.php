@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\ServiceProfileController;
-use App\Http\Controllers\AvailabilityController;
+use App\Http\Controllers\Admin\AvailabilityController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,10 +21,13 @@ Route::middleware('auth')->prefix('admin')->group(function () {
 
     Route::get('service/profiles/{service_profile}/delete', [ServiceProfileController::class, 'delete'])->name('service-profiles.delete');
     Route::resource('service-profiles', ServiceProfileController::class)->except(['destroy']); // various service profiles
+
+    Route::get('availabilites/{availability}/delete', [AvailabilityController::class, 'delete'])->name('availabilites.delete');
+    Route::resource('availabilites', AvailabilityController::class)->except(['destroy']); // various service profiles
     
-    Route::post('/availability/weekly', [AvailabilityController::class, 'setWeeklyAvailability']);
-    Route::post('/availability/override', [AvailabilityController::class, 'setOverrideAvailability']);
-    Route::get('/availability/{profile}/buyer', [AvailabilityController::class, 'getAvailabilityForBuyer']);
+    // Route::post('/availability/weekly', [AvailabilityController::class, 'setWeeklyAvailability']);
+    // Route::post('/availability/override', [AvailabilityController::class, 'setOverrideAvailability']);
+    // Route::get('/availability/{profile}/buyer', [AvailabilityController::class, 'getAvailabilityForBuyer']);
 });
 
 

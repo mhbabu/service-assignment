@@ -1,12 +1,12 @@
 <?php
 
-namespace App\DataTables\Category;
+namespace App\DataTables\Profile;
 
-use App\Models\Category;
+use App\Models\WeeklyAvailability;
 use Yajra\DataTables\Services\DataTable;
 use Illuminate\Http\JsonResponse;
 
-class CategoryListDataTable extends DataTable
+class ProfileDetailDataTable extends DataTable
 {
     /**
      * Display ajax response.
@@ -18,30 +18,22 @@ class CategoryListDataTable extends DataTable
     {
         return datatables()
             ->eloquent($this->query())
-            ->editColumn('name', function($data){
-                return ucfirst($data->name) ?? '-';
-            })
             ->editColumn('status', function ($data) {
-                return $data->status === 1 ? "<label class='badge bg-success'> Active </label>" : "<label class='badge bg-danger'> Inactive </label>";
+                if ($data->status === 1) return "<label class='badge bg-success'> Active </label>";
+                else if ($data->status === 2) return "<label class='badge bg-warning'> Pending</label>";
+                return "<label class='badge bg-danger'> Rejected/Banned </label>";
             })
-            ->addColumn('action', function ($data) {
-                if(auth()->user()->is_admin){
-                    $actionBtn = '<a href="' . route('categories.edit', $data->id) . '" class="btn btn-xs btn-primary btn-sm" title="Edit"> <i class="bi bi-pencil"></i> Edit</a> ';
-                    $actionBtn .= '<a href="' . route('categories.delete', $data->id) . '" class="btn btn-xs btn-danger btn-sm" title="Delete" onclick="return confirm(\'Are you sure you want to delete this item?\')"> <i class="bi bi-trash"></i> Delete</a>';
-    
-                    return $actionBtn;
-                }
-                
-               return '-';
-
+            ->editColumn('category_name', function($data){
+                return ucfirst($data->category_name) ?? '-';
             })
-            ->rawColumns(['action', 'status'])
+            ->rawColumns(['status'])
             ->make(true);
     }
 
-    public function getCategoryList()
+    public function weeklyAvailabilityList()
     {
-        return Category::latest();
+        return WeeklyAvailability::where('profile_id', $this->profile_id)->latest();  
+            
     }
 
     /**s
@@ -51,7 +43,7 @@ class CategoryListDataTable extends DataTable
      */
     public function query()
     {
-        return $this->applyScopes($this->getCategoryList());
+        return $this->applyScopes($this->weeklyAvailabilityList());
     }
 
     /**
@@ -80,11 +72,11 @@ class CategoryListDataTable extends DataTable
                 'language' => [
                     'lengthMenu' => '<span class="length-menu-text">Show</span> _MENU_ <span class="length-menu-text">entries</span>',
                     'paginate' => [
-                    'first'    => '&laquo;',
-                    'previous' => '&lsaquo;',
-                    'next'     => '&rsaquo;',
-                    'last'     => '&raquo;',
-                ],
+                        'first'    => '&laquo;',
+                        'previous' => '&lsaquo;',
+                        'next'     => '&rsaquo;',
+                        'last'     => '&raquo;',
+                    ],
                 ]
             ]);
     }
@@ -97,9 +89,9 @@ class CategoryListDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'name'             => ['data' => 'name', 'name' => 'name', 'orderable' => true, 'searchable' => true],
-            'status'           => ['data' => 'status', 'name' => 'status', 'orderable' => true, 'searchable' => false],
-            'action'           => ['searchable' => false, 'orderable' => false]
+            'day_of_week'   => ['data' => 'day_of_week', 'name' => 'day_of_week', 'orderable' => true, 'searchable' => true],
+            'start_time'    => ['data' => 'start_time', 'name' => 'start_time', 'orderable' => true, 'searchable' => true],
+            'end_time'        => ['end_time' => 'status', 'name' => 'end_time', 'orderable' => true, 'searchable' => true]
         ];
     }
     /**
@@ -109,6 +101,6 @@ class CategoryListDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Category_List_' . date('Y_m_d_H_i_s') . '.json';
+        return 'Weekly_Availability_List' . date('Y_m_d_H_i_s') . '.json';
     }
 }

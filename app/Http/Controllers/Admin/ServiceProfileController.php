@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\DataTables\Profile\ProfileDetailDataTable;
 use App\DataTables\Profile\ProfileListDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
@@ -28,19 +29,23 @@ class ServiceProfileController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'title'       => 'required|unique:profiles,title',
             'category_id' => [ 'required', Rule::unique('profiles')->where(function ($query) {
                 return $query->where('user_id', auth()->id());
             }),
         ],
-            'status' => 'required'
+            'timezone' => 'required|timezone',
+            'status'   => 'required'
         ],[],[
             'category_id' => 'category profile'
         ]);
 
         Profile::create([
+            'title'       => $request->input('title'),
             'category_id' => $request->input('category_id'),
             'status'      => $request->input('status'),
-            'user_id'     => auth()->id()
+            'user_id'     => auth()->id(),
+            'timezone'    => $request->input('timezone'),
         ]);
         Toastr::success('Profile created successfully.');
         return redirect()->route('service-profiles.index');
@@ -58,11 +63,13 @@ class ServiceProfileController extends Controller
     public function update(Request $request, Profile $service_profile)
     {
         $request->validate([
+            'title'       => 'required|unique:profiles,title,'.$service_profile->id,
             'category_id' => ['required', Rule::unique('profiles')->where(function ($query) use ($service_profile) {
                     return $query->where('user_id', auth()->id())->where('id', '<>', $service_profile->id);
                 }),
             ],
-            'status' => 'required'
+            'timezone' => 'required|timezone',
+            'status'   => 'required'
         ], [], [
             'category_id' => 'category profile'
         ]);
@@ -70,11 +77,18 @@ class ServiceProfileController extends Controller
         $service_profile->update([
             'category_id' => $request->input('category_id'),
             'status'      => $request->input('status'),
-            'user_id'     => auth()->id()
+            'user_id'     => auth()->id(),
+            'timezone'    => $request->input('timezone'),
         ]);
 
         Toastr::success('Profile updated successfully.');
         return redirect()->route('service-profiles.index');
+    }
+
+    public function show(ProfileDetailDataTable $profileDetailDataTable, Profile $service_profile){
+        $data['profile']      = $service_profile;
+        $params['profile_id'] = $service_profile->id;
+        return $profileDetailDataTable->with($params)->render('admin.service-profile.detail', $data);
     }
 
     public function delete(Profile $service_profile)

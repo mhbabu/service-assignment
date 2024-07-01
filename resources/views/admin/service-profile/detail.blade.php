@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Profile List')
+@section('title', 'Profile Detail')
 @section('header-css')
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/data-table/css/jquery.dataTables.css') }}">
 @endsection
@@ -9,10 +9,10 @@
     <div class="card mt-5">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h4 class="card-title fw-bold mb-0">
-                <i class="bi bi-list me-2"></i> {{ __('Profile List') }}
+                <i class="bi bi-list me-2"></i> Profile : <strong> {{ $profile->title }}</strong> - Weekly Availability List
             </h4>
-            <a class="btn btn-success btn-sm fw-bold" title="Create New" href="{{ route('service-profiles.create') }}">
-                <i class="bi bi-plus-circle"></i> Create
+            <a class="btn btn-secondary btn-sm fw-bold" title="Create New" href="{{ route('service-profiles.create') }}">
+                <i class="fa fa-backward"></i> Back
             </a>
         </div>
         <div class="card-body border-top p-9">

@@ -10,14 +10,19 @@
             </div>
 
             {!! html()->form('PATCH', route('service-profiles.update', $profile->id))->class('form-horizontal')->open() !!}
+            {!! html()->hidden('timezone')->id('timezone') !!}
             <div class="card-body">
 
                 <div class="row mb-3">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                        {!! html()->label('Title')->class('form-label required')->for('title') !!}
+                        {!! html()->text('title')->value($profile->title)->class('form-control')->placeholder('Title')->autofocus() !!}
+                    </div>
+                    <div class="col-md-4">
                         {!! html()->label('Category')->class('form-label required')->for('occasion') !!}
                         {!! html()->select('category_id')->options($categories)->value($profile->category_id)->class('form-control')->placeholder('Select Category')->autofocus() !!}
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         {!! html()->label('Status')->class('form-label required')->for('status') !!}
                         {!! html()->select('status')->options([1 => 'Active', 0 => 'Inactive'])->value($profile->status)->class('form-control')  !!}
                     </div>
@@ -40,4 +45,16 @@
         </div>
     </div>
 @endsection
-           
+@section('footer-script')
+    <script src="{{ asset('assets/js/moment.min.js') }}"></script>
+    <script src="{{ asset('assets/js/moment-timezone-with-data.min.js') }}"></script>
+    <script>
+        /*******************************************
+        DYNAMICALLY TIME ZONE SCRIPTING START HERE
+        ********************************************/
+            $(document).ready(function() {
+                const timezone = moment.tz.guess();
+                $('#timezone').val(timezone);
+            });
+    </script>
+@endsection

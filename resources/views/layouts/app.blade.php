@@ -12,10 +12,11 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Scripts -->
     @vite('resources/sass/app.scss')
-    <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
+    <link href="{{ asset('assets/css/all.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('assets/toaster/css/toastr.min.css') }}">
     @yield('header-css')
 </head>
 
@@ -54,6 +55,9 @@
                                 </li>
                             @endif
                         @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('availabilites.index') }}">{{ __('Availabilities') }}</a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('categories.index') }}">{{ __('Categories') }}</a>
                             </li>
@@ -99,8 +103,8 @@
 
 @vite('resources/js/app.js')
 
-<script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
-<script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+<script src="{{ asset('assets/js/jquery.min.js')}}"></script>
+<script src="{{ asset('assets/toaster/js/toastr.min.js')}}"></script>
 {!! Toastr::message() !!}
 @yield('footer-script')
 

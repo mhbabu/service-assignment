@@ -9,17 +9,13 @@
                 <h5> <i class="fa fa-plus-circle"></i> {{ __('Create Designation') }}</h5>
             </div>
 
-            {{ html()->form('POST', route('holidays.store'))->class('form-horizontal')->open() }}
+            {{ html()->form('POST', route('categories.store'))->class('form-horizontal')->open() }}
             <div class="card-body">
 
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        {{ html()->label('Occasion')->class('form-label required')->for('occasion') }}
-                        {{ html()->text('occasion')->class('form-control')->placeholder('occasion')->attribute('maxlength', 191)->required()->autofocus() }}
-                    </div>
-                    <div class="col-md-6">
-                        {{ html()->label('Date')->class('form-label required')->for('date') }}
-                        {{ html()->text('date')->class('form-control')->placeholder('date')->attribute('maxlength', 191)->required()->autofocus()->id('date')->placeholder('YYYY-MM-DD')->autocomplete('off') }}
+                        {{ html()->label('Name')->class('form-label required')->for('name') }}
+                        {{ html()->text('name')->class('form-control')->placeholder('name')->attribute('maxlength', 191)->required()->autofocus() }}
                     </div>
                     <div class="col-md-6">
                         {{ html()->label('Status')->class('form-label required')->for('status') }}
@@ -34,7 +30,7 @@
             <div class="card-footer">
                 <div class="row mb-0">
                     <div class="col-md-6 text-start">
-                        <a href="{{ route('holidays.index') }}" class="btn btn-secondary btn-sm"> {{
+                        <a href="{{ route('categories.index') }}" class="btn btn-secondary btn-sm"> {{
                             __('Back')
                             }} </a>
                     </div>

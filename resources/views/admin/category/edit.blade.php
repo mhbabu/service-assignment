@@ -1,29 +1,29 @@
 @extends('layout.master')
-@section('title', 'Edit Holiday')
+@section('title', 'Add New Designation')
 @section('content')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <div class="px-4">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <div class="container-fluid">
         <div class="card">
             <div class="card-header">
-                <h5> <i class="fa fa-edit"></i> {{ __('Edit Holidays') }}</h5>
+                <h5> <i class="fa fa-plus-circle"></i> {{ __('Create Designation') }}</h5>
             </div>
 
-            {!! html()->form('PATCH', route('holidays.update', $holiday->id))->class('form-horizontal')->open() !!}
+            {{ html()->form('POST', route('categories.store'))->class('form-horizontal')->open() }}
             <div class="card-body">
 
                 <div class="row mb-3">
                     <div class="col-md-6">
-                        {{ html()->label('Occasion')->class('form-label required')->for('occation') }}
-                        {{ html()->text('occasion')->value($holiday->occasion)->class('form-control')->placeholder('occation')->attribute('maxlength', 191)->required()->autofocus() }}
+                        {{ html()->label('Occasion')->class('form-label required')->for('occasion') }}
+                        {{ html()->text('occasion')->class('form-control')->placeholder('occasion')->attribute('maxlength', 191)->required()->autofocus() }}
                     </div>
                     <div class="col-md-6">
                         {{ html()->label('Date')->class('form-label required')->for('date') }}
-                        {{ html()->text('date')->value($holiday->date)->class('form-control')->placeholder('date')->attribute('maxlength', 191)->required()->autofocus()->id('date')->placeholder('YYYY-MM-DD')->autocomplete('off') }}
+                        {{ html()->text('date')->class('form-control')->placeholder('date')->attribute('maxlength', 191)->required()->autofocus()->id('date')->placeholder('YYYY-MM-DD')->autocomplete('off') }}
                     </div>
                     <div class="col-md-6">
                         {{ html()->label('Status')->class('form-label required')->for('status') }}
-                        {{ html()->select('status')->value($holiday->status)
+                        {{ html()->select('status')
                         ->options([1 => 'Active', 0 => 'Inactive'])
                         ->class('form-control')
                         ->attribute('maxlength', 191)
@@ -44,7 +44,7 @@
                 </div>
                 <div class="clearfix"></div>
             </div>
-            {!! html()->form()->close() !!}
+            {{ html()->form()->close() }}
         </div>
     </div>
 </div>

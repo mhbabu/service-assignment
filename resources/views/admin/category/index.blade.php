@@ -1,19 +1,19 @@
 @extends('layouts.app')
 @section('title', 'Category List')
 @section('header-css')
-<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.css">
-<link rel="stylesheet" type="text/css" href="assets/data-table/css/datatables.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/data-table/css/jquery.dataTables.css') }}">
 @endsection
+
 @section('content')
 <div class="container">
     <div class="card mt-5">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h4 class="card-title fw-bold mb-0">
-                <i class="fa fa-list-alt me-2"></i> {{ __('Category List') }}
+                <i class="bi bi-list me-2"></i> {{ __('Category List') }}
             </h4>
-            <a class="btn btn-success btn-sm fw-bold" title="Create New" href="{{ route('categories.create') }}">
+            {{-- <a class="btn btn-success btn-sm fw-bold" title="Create New" href="{{ route('categories.create') }}">
                 <i class="fa fa-plus-circle"></i> Create
-            </a>
+            </a> --}}
         </div>
         <div class="card-body border-top p-9">
             <div class="row">
@@ -27,9 +27,7 @@
 @endsection
 
 @section('footer-script')
-    <script src="assets/data-table/js/datatables.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.15/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="{{ asset('assets/data-table/js/jquery.dataTables.js') }}"></script>
 
     @if(isset($dataTable))
         {!! $dataTable->scripts() !!}
